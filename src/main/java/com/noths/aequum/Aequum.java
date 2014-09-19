@@ -209,12 +209,12 @@ public class Aequum {
     public static class ComparableBuilder<T> {
         private final Class<T> expectedType;
         private final List<Function<T, ?>> fields;
-        private final Map<Function<T, ?>, Comparator> compartors;
+        private final Map<Function<T, ?>, Comparator> comparators;
 
         private <V> ComparableBuilder(final Class<T> expectedType, final Function<T, V> field, final Comparator<V> comparator) {
             this.expectedType = expectedType;
             this.fields = new ArrayList<>();
-            this.compartors = new HashMap<>();
+            this.comparators = new HashMap<>();
 
             withComparableField(field, comparator);
         }
@@ -272,7 +272,7 @@ public class Aequum {
          */
         public <V> ComparableBuilder<T> withComparableField(final Function<T, V> field, final Comparator<V> comparator) {
             fields.add(field);
-            compartors.put(field, comparator);
+            comparators.put(field, comparator);
             return this;
         }
 
@@ -296,7 +296,7 @@ public class Aequum {
          * @return A newly constructed {@linkplain ComparableEqualsHashCode}.
          */
         public ComparableEqualsHashCode<T> build() {
-            return new ComparableEqualsHashCode<>(fields, compartors, expectedType);
+            return new ComparableEqualsHashCode<>(fields, comparators, expectedType);
         }
     }
 
