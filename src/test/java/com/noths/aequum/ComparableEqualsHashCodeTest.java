@@ -54,7 +54,7 @@ public class ComparableEqualsHashCodeTest {
         final Dummy one = dummy("one", null, "three", "four");
         final Dummy two = dummy("one", null, "three", "four");
 
-        assertEquals(0, subject.isComparableTo(one, two));
+        assertEquals(0, subject.compare(one, two));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ComparableEqualsHashCodeTest {
         final Dummy one = dummy("one", null, "three", "four");
         final Dummy two = dummy("one", "two", "three", "four");
 
-        assertThat(subject.isComparableTo(one, two), lessThan(0));
+        assertThat(subject.compare(one, two), lessThan(0));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ComparableEqualsHashCodeTest {
         final Dummy one = dummy("one", "two", "three", "four");
         final Dummy two = dummy("one", null, "three", "four");
 
-        assertThat(subject.isComparableTo(one, two), greaterThan(0));
+        assertThat(subject.compare(one, two), greaterThan(0));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ComparableEqualsHashCodeTest {
         final Dummy one = dummy("one", "two", "three", "four");
         final Dummy two = dummy("one", "two", "three");
 
-        assertEquals(0, subject.isComparableTo(one, two));
+        assertEquals(0, subject.compare(one, two));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ComparableEqualsHashCodeTest {
         final Dummy one = dummy("one", first, "three", "four");
         final Dummy two = dummy("one", second, "three", "four");
 
-        assertEquals(first.compareTo(second), subject.isComparableTo(one, two));
+        assertEquals(first.compareTo(second), subject.compare(one, two));
     }
 
     private Dummy dummy(final String one, final String two, final String... three) {
