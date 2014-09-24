@@ -80,7 +80,7 @@ import java.util.function.Function;
  *
  *   &#64;Override
  *   public int compareTo(final Pojo o) {
- *     return EQUALS_HASH_CODE.compareTo(this, o);
+ *     return EQUALS_HASH_CODE.compare(this, o);
  *   }
  * }
  * </pre>
