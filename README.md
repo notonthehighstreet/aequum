@@ -65,7 +65,7 @@ public Example implements Comparable<Example> {
 
   @Override
   public int compareTo(final Example o) {
-    return EQUALS_HASH_CODE.isComparableTo(this, o);
+    return EQUALS_HASH_CODE.compare(this, o);
   }
 }
 ````

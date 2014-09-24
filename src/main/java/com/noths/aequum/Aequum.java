@@ -84,7 +84,7 @@ import java.util.function.Function;
  *   }
  * }
  * </pre>
- * @see ComparableEqualsHashCode#isComparableTo(Object, Object)
+ * @see ComparableEqualsHashCode#compare(Object, Object)
  * @see EqualsHashCode#toHashCode(Object)
  * @see EqualsHashCode#isEqual(Object, Object)
  */

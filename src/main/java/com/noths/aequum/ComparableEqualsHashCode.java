@@ -79,7 +79,7 @@ public class ComparableEqualsHashCode<T> extends EqualsHashCode<T> {
      * @param thatObject Object to compare it to.
      * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
      */
-    public int isComparableTo(final T thisObject, final T thatObject) {
+    public int compare(final T thisObject, final T thatObject) {
         return fields().map(f -> compare(comparators.get(f), f.apply(thisObject), f.apply(thatObject))).filter(i -> i != 0).findFirst().orElse(0);
     }
 
