@@ -1,4 +1,4 @@
-package com.noths.aequum;
+package com.notonthehighstreet.aequum;
 
 /*
  * #%L

@@ -1,4 +1,4 @@
-package com.noths.aequum;
+package com.notonthehighstreet.aequum;
 
 /*
  * #%L
@@ -26,31 +26,26 @@ package com.noths.aequum;
  * #L%
  */
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * <p>
- *     Utility class that allows {@linkplain Object#equals(Object) equals}, {@linkplain Object#hashCode() hashCode} and {@linkplain Comparable#compareTo(Object)} methods to be
- *     written simply and quickly.
+ *     Utility class that allows {@linkplain Object#equals(Object) equals} and {@linkplain Object#hashCode() hashCode} methods to be written simply and quickly.
  * </p>
  * <p>
  *     Example
  * </p>
  * <pre>
- *  private static final ComparableEqualsHashCode<DeliveryGroup> EQUALS_HASH_CODE = Aequum.builder(DeliveryGroup.class)
- *      .withComparableField(o -> o.partner)
- *      .withComparableField(o -> o.name)
+ *  private static final EqualsHashCode<DeliveryGroup> EQUALS_HASH_CODE = Aequum.builder(DeliveryGroup.class)
+ *      .withField(o -> o.partner)
+ *      .withField(o -> o.name)
  *      .build();
  * </pre>
  * <pre>
- *
- * &#64;Override
- * public int compareTo(Example o) {
- *   return EQUALS_HASH_CODE.compareTo(this, o);
- * }
  *
  * &#64;Override
  * public boolean equals(Object o) {
@@ -64,28 +59,46 @@ import java.util.function.Function;
  * </pre>
  * @param <T> Type that the equality and hash codes should be calculated on.
  */
-public class ComparableEqualsHashCode<T> extends EqualsHashCode<T> {
+public class EqualsHashCode<T> {
 
-    private final Map<Function<T, ?>, Comparator> comparators;
+    private final Collection<Function<T, ?>> fields;
+    private final Class<T> expectedType;
 
-    ComparableEqualsHashCode(final Collection<Function<T, ?>> fields, final Map<Function<T, ?>, Comparator> comparators, final Class<T> expectedType) {
-        super(fields, expectedType);
-        this.comparators = comparators;
+    EqualsHashCode(final Collection<Function<T, ?>> fields, final Class<T> expectedType) {
+        this.fields = fields;
+        this.expectedType = expectedType;
+    }
+
+    Stream<Function<T, ?>> fields() {
+        return fields.stream();
     }
 
     /**
-     * Compare two objects to each other for ordering.
+     * Check whether the given objects are equal.
      * @param thisObject <code>this</code> object.
      * @param thatObject Object to compare it to.
-     * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
+     * @return True if they are equal, false otherwise.
      */
-    public int compare(final T thisObject, final T thatObject) {
-        return fields().map(f -> compare(comparators.get(f), f.apply(thisObject), f.apply(thatObject))).filter(i -> i != 0).findFirst().orElse(0);
+    public boolean isEqual(final T thisObject, final Object thatObject) {
+        if (thisObject == thatObject) {
+            return true;
+        }
+        if (!expectedType.isInstance(thatObject)) {
+            return false;
+        }
+
+        final T that = expectedType.cast(thatObject);
+
+        return fields().allMatch(f -> Objects.deepEquals(f.apply(thisObject), f.apply(that)));
     }
 
-    @SuppressWarnings("unchecked")
-    private int compare(final Comparator comparator, final Object thisField, final Object thatField) {
-        return comparator.compare(thisField, thatField);
+    /**
+     * Calculate the hash code for the given object.
+     * @param thisObject <code>this</code> object.
+     * @return The hash code value.
+     */
+    public int toHashCode(final T thisObject) {
+        final Stream<Object> map = fields().map(f -> f.apply(thisObject));
+        return Arrays.deepHashCode(map.toArray(Object[]::new));
     }
-
 }
