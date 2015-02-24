@@ -40,9 +40,9 @@ import java.util.function.Function;
  *     Example
  * </p>
  * <pre>
- *  private static final ComparableEqualsHashCode<DeliveryGroup> EQUALS_HASH_CODE = Aequum.builder(DeliveryGroup.class)
- *      .withComparableField(o -> o.partner)
- *      .withComparableField(o -> o.name)
+ *  private static final ComparableEqualsHashCode&lt;DeliveryGroup&gt; EQUALS_HASH_CODE = Aequum.builder(Example.class)
+ *      .withComparableField(o -&gt; o.exampleOne)
+ *      .withComparableField(Example::getExampleTwo)
  *      .build();
  * </pre>
  * <pre>
@@ -80,7 +80,10 @@ public class ComparableEqualsHashCode<T> extends EqualsHashCode<T> {
      * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
      */
     public int compare(final T thisObject, final T thatObject) {
-        return fields().map(f -> compare(comparators.get(f), f.apply(thisObject), f.apply(thatObject))).filter(i -> i != 0).findFirst().orElse(0);
+        return fields()
+                .map(f -> compare(comparators.get(f), f.apply(thisObject), f.apply(thatObject)))
+                .filter(i -> i != 0)
+                .findFirst().orElse(0);
     }
 
     @SuppressWarnings("unchecked")

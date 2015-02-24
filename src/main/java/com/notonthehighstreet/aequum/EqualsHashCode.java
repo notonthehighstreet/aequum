@@ -40,9 +40,9 @@ import java.util.stream.Stream;
  *     Example
  * </p>
  * <pre>
- *  private static final EqualsHashCode<DeliveryGroup> EQUALS_HASH_CODE = Aequum.builder(DeliveryGroup.class)
- *      .withField(o -> o.partner)
- *      .withField(o -> o.name)
+ *  private static final EqualsHashCode&lt;DeliveryGroup&gt; EQUALS_HASH_CODE = Aequum.builder(Pojo.class)
+ *      .withField(o -&gt; o.fieldOne)
+ *      .withField(Pojo::getFieldTwo)
  *      .build();
  * </pre>
  * <pre>
